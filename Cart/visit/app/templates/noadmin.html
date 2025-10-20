@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Доступ запрещен</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: #fff;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            overflow: visible;
+            box-shadow: 
+                0 25px 50px rgba(0, 0, 0, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(20px);
+            text-align: center;
+            padding: 60px 40px;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 40px;
+        }
+
+        /* Анимированные элементы безопасности */
+        .security-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+
+        .lock-icon {
+            position: absolute;
+            font-size: 2rem;
+            animation: float 6s infinite ease-in-out;
+        }
+
+        .lock-icon:nth-child(1) {
+            top: 10%;
+            left: 5%;
+            animation-delay: 0s;
+        }
+
+        .lock-icon:nth-child(2) {
+            top: 15%;
+            right: 8%;
+            animation-delay: -2s;
+        }
+
+        .lock-icon:nth-child(3) {
+            bottom: 20%;
+            left: 10%;
+            animation-delay: -4s;
+        }
+
+        .shield {
+            position: absolute;
+            font-size: 3rem;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.1;
+            animation: pulse 4s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(10deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.1; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 0.15; transform: translate(-50%, -50%) scale(1.1); }
+        }
+
+        .main-icon {
+            font-size: 8rem;
+            margin-bottom: 30px;
+            animation: bounce 3s infinite alternate;
+            filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3));
+        }
+
+        @keyframes bounce {
+            0% { transform: translateY(0) scale(1); }
+            100% { transform: translateY(-15px) scale(1.05); }
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #ff6b6b, #ffd93d, #6bcf7f);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .access-denied {
+            font-size: 1.4rem;
+            color: #ff6b6b;
+            margin-bottom: 25px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .message {
+            font-size: 1.3rem;
+            margin-bottom: 40px;
+            line-height: 1.8;
+            opacity: 0.9;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .permission-list {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 40px;
+            border-left: 4px solid #ff6b6b;
+        }
+
+        .permission-list h3 {
+            color: #ffd93d;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .permission-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .permission-item:last-child {
+            border-bottom: none;
+        }
+
+        .permission-item.denied .icon {
+            color: #ff6b6b;
+        }
+
+        .permission-item.granted .icon {
+            color: #6bcf7f;
+        }
+
+        .icon {
+            font-size: 1.2rem;
+            width: 24px;
+            text-align: center;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 16px 35px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #6bcf7f, #4fa3d1);
+            color: #fff;
+            box-shadow: 0 8px 25px rgba(107, 207, 127, 0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(45deg, #5bbf6f, #3e93c1);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .admin-contact {
+            margin-top: 40px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .admin-contact h3 {
+            color: #4fa3d1;
+            margin-bottom: 10px;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            font-size: 0.9rem;
+        }
+
+        /* Анимация сканирования */
+        .scan-line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #ff6b6b, transparent);
+            animation: scan 3s infinite linear;
+            box-shadow: 0 0 10px #ff6b6b;
+        }
+
+        @keyframes scan {
+            0% { top: 0; opacity: 0; }
+            50% { opacity: 1; }
+            100% { top: 100%; opacity: 0; }
+        }
+
+        .security-level {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 107, 107, 0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            border: 1px solid rgba(255, 107, 107, 0.3);
+        }
+
+        /* Дополнительный контент для прокрутки */
+        .additional-content {
+            max-width: 800px;
+            width: 100%;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 25px;
+            padding: 40px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .content-section {
+            margin-bottom: 30px;
+        }
+
+        .content-section h3 {
+            color: #ffd93d;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .content-section p {
+            margin-bottom: 15px;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .feature-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .scroll-indicator {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: pulse 2s infinite;
+        }
+
+        .scroll-indicator:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 40px 25px;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .main-icon {
+                font-size: 6rem;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+            
+            .contact-info {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .main-icon {
+                font-size: 4rem;
+            }
+            
+            .message {
+                font-size: 1.1rem;
+            }
+            
+            .permission-list {
+                padding: 20px 15px;
+            }
+        }
+
+        /* Эффект матрицы для фона */
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0.1;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body>
+    <div class="matrix-bg" id="matrixBg"></div>
+    
+    <!-- Индикатор прокрутки -->
+    <div class="scroll-indicator" onclick="scrollToTop()" title="Наверх">
+        ⬆️
+    </div>
+    
+    <div class="security-elements">
+        <div class="lock-icon">🔒</div>
+        <div class="lock-icon">🔐</div>
+        <div class="lock-icon">🚫</div>
+        <div class="shield">🛡️</div>
+    </div>
+    
+    <div class="scan-line"></div>
+    
+    <div class="container">
+        <div class="security-level">УРОВЕНЬ ДОСТУПА: ОГРАНИЧЕН</div>
+        
+        <div class="main-icon">👨‍💼</div>
+        
+        <h1>ДОСТУП ОГРАНИЧЕН</h1>
+        
+        <div class="access-denied">Ошибка 403: Недостаточно прав</div>
+        
+        <p class="message">
+            Упс! Похоже, у вас недостаточно привилегий для просмотра этой страницы.<br>
+            Эта зона доступна только для администраторов системы.
+        </p>
+        
+        <div class="permission-list">
+            <h3>🛡️ ТРЕБУЕМЫЕ ПРАВА ДОСТУПА:</h3>
+            
+            <div class="permission-item denied">
+                <span class="icon">❌</span>
+                <span>Административные привилегии</span>
+            </div>
+            
+            <div class="permission-item denied">
+                <span class="icon">❌</span>
+                <span>Доступ к системным настройкам</span>
+            </div>
+            
+            <div class="permission-item denied">
+                <span class="icon">❌</span>
+                <span>Управление пользователями</span>
+            </div>
+            
+            <div class="permission-item granted">
+                <span class="icon">✅</span>
+                <span>Просмотр общедоступных страниц</span>
+            </div>
+            
+            <div class="permission-item granted">
+                <span class="icon">✅</span>
+                <span>Доступ к портфолио</span>
+            </div>
+        </div>
+        
+        <div class="action-buttons">
+            <a href="{% url 'home' %}" class="btn btn-primary">
+                🏠 На главную
+            </a>
+            <a href="{% url 'work' %}" class="btn btn-secondary">
+                💼 Мои работы
+            </a>
+            <button onclick="requestAccess()" class="btn btn-secondary">
+                🔑 Запросить доступ
+            </button>
+        </div>
+        
+        <div class="admin-contact">
+            <h3>📧 НУЖЕН ДОСТУП?</h3>
+            <p>Свяжитесь с администратором системы</p>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <span>📧</span>
+                    <span>admin@example.com</span>
+                </div>
+                <div class="contact-item">
+                    <span>📞</span>
+                    <span>+375 (29) XXX-XX-XX</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Дополнительный контент для прокрутки -->
+    <div class="additional-content">
+        <div class="content-section">
+            <h3>🔒 Почему доступ ограничен?</h3>
+            <p>Эта страница содержит конфиденциальную информацию и инструменты управления системой, доступные только уполномоченным администраторам.</p>
+            <p>Мы заботимся о безопасности данных наших пользователей и соблюдаем строгие протоколы доступа.</p>
+        </div>
+        
+        <div class="content-section">
+            <h3>📋 Что требуется для получения доступа?</h3>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <div class="feature-icon">👤</div>
+                    <h4>Верификация</h4>
+                    <p>Подтверждение личности и должности</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🔐</div>
+                    <h4>Авторизация</h4>
+                    <p>Получение специальных учетных данных</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">⚡</div>
+                    <h4>Обучение</h4>
+                    <p>Прохождение курса по безопасности</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content-section">
+            <h3>🛡️ Меры безопасности</h3>
+            <p>Наша система использует многоуровневую защиту:</p>
+            <ul style="text-align: left; margin: 20px 0; padding-left: 20px;">
+                <li>Двухфакторная аутентификация</li>
+                <li>Шифрование данных end-to-end</li>
+                <li>Мониторинг активности в реальном времени</li>
+                <li>Регулярные аудиты безопасности</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function createMatrix() {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            const matrixBg = document.getElementById('matrixBg');
+            
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            matrixBg.appendChild(canvas);
+            
+            const chars = "01010101010101010101010101010101";
+            const charArray = chars.split("");
+            const fontSize = 14;
+            const columns = canvas.width / fontSize;
+            const drops = [];
+            
+            for(let i = 0; i < columns; i++) {
+                drops[i] = 1;
+            }
+            
+            function draw() {
+                ctx.fillStyle = "rgba(0, 0, 0, 0.04)";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                ctx.fillStyle = "#0f0";
+                ctx.font = fontSize + "px monospace";
+                
+                for(let i = 0; i < drops.length; i++) {
+                    const text = charArray[Math.floor(Math.random() * charArray.length)];
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                    
+                    if(drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                        drops[i] = 0;
+                    }
+                    drops[i]++;
+                }
+            }
+            
+            setInterval(draw, 35);
+        }
+
+        createMatrix();
+
+        function requestAccess() {
+            const btn = event.target;
+            const originalText = btn.innerHTML;
+            
+            btn.innerHTML = '📡 Отправка запроса...';
+            btn.style.opacity = '0.7';
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                btn.innerHTML = '✅ Запрос отправлен!';
+                btn.style.background = 'linear-gradient(45deg, #6bcf7f, #4fa3d1)';
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.style.opacity = '1';
+                    btn.style.background = '';
+                    btn.disabled = false;
+                }, 3000);
+            }, 2000);
+        }
+
+        const permissionItems = document.querySelectorAll('.permission-item');
+        permissionItems.forEach((item, index) => {
+            item.style.opacity = '0';
+            item.style.transform = 'translateX(-20px)';
+            
+            setTimeout(() => {
+                item.style.transition = 'all 0.5s ease';
+                item.style.opacity = '1';
+                item.style.transform = 'translateX(0)';
+            }, index * 200);
+        });
+
+        const mainIcons = ['👨‍💼', '🔒', '🚫', '👮', '💂'];
+        const mainIconElement = document.querySelector('.main-icon');
+        
+        setInterval(() => {
+            if (Math.random() > 0.8) {
+                const randomIcon = mainIcons[Math.floor(Math.random() * mainIcons.length)];
+                mainIconElement.textContent = randomIcon;
+            }
+        }, 3000);
+
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        window.addEventListener('scroll', function() {
+            const scrollIndicator = document.querySelector('.scroll-indicator');
+            if (window.scrollY > 300) {
+                scrollIndicator.style.display = 'block';
+            } else {
+                scrollIndicator.style.display = 'none';
+            }
+        });
+
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.additional-content .content-section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(30px)';
+            section.style.transition = 'all 0.6s ease';
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>
